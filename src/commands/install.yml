@@ -1,0 +1,18 @@
+# src/commands/install.yml
+# yamllint disable rule:line-length
+---
+description: |
+  Install vault cli for linux/intel arch
+
+parameters:
+
+  vault-version:
+    description: Version of the Vault binary
+    type: string
+    default: "1.19.4"
+steps:
+  - run:
+      name: Install the Vault binary
+      environment:
+        VAULT_VERSION: << parameters.vault-version >>
+      command: << include(scripts/install_vault.sh) >>
