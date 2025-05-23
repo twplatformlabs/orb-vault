@@ -1,0 +1,32 @@
+# src/examples/orb-examples.yaml
+# yamllint disable rule:line-length
+---
+description: Standard workflow demonstrating orb features.
+
+usage:
+  version: 2.1
+
+  orbs:
+    vault: twdps/vault@0.0.1
+
+  on-push-main: &on-push-main
+    branches:
+      only: /main/
+    tags:
+      ignore: /.*/
+
+  jobs:
+    example on ubuntu machine executor:
+      machine:
+        image: ubuntu-2204:current
+      resource_class: medium
+      steps:
+        - checkout
+        - vault/install:
+            vault-version: 1.19.4
+
+  workflows:
+    version: 2
+    workflow-example:
+      jobs:
+        - example on ubuntu machine executor
