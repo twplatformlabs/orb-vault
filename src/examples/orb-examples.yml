@@ -24,6 +24,7 @@ usage:
         - checkout
         - vault/install:
             vault-version: 1.19.4
+            teller-version: 1.5.6
 
   workflows:
     version: 2

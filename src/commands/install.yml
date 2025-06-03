@@ -10,9 +10,18 @@ parameters:
     description: Version of the Vault binary
     type: string
     default: "1.19.4"
+  teller-version:
+    description: Version of the Teller binary
+    type: string
+    default: "1.5.6"
 steps:
   - run:
       name: Install the Vault binary
       environment:
         VAULT_VERSION: << parameters.vault-version >>
       command: << include(scripts/install_vault.sh) >>
+  - run:
+      name: Install the teller binary
+      environment:
+        TELLER_VERSION: << parameters.teller-version >>
+      command: << include(scripts/install_teller.sh) >>
