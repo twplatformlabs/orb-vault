@@ -1,3 +1,5 @@
+# src/commands/auth_vault.yml
+---
 description: |
   Retrieve and export VAULT_TOKEN using Approle Auth. Required env vars are:
   VAULT_ROLE_ID, VAULT_SECRET_ID, VAULT_ADDR
