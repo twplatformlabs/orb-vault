@@ -1,0 +1,9 @@
+description: |
+  Retrieve and export VAULT_TOKEN using Approle Auth. Required env vars are:
+  VAULT_ROLE_ID, VAULT_SECRET_ID, VAULT_ADDR
+  These must be set in the circleci context
+steps:
+  - jq/install
+  - run:
+      name: Retrieve and export VAULT_TOKEN
+      command: << include(scripts/vault_token.sh) >>
