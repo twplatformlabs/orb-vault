@@ -8,7 +8,7 @@ description: |
 
   Available commands include:
 
-  - install: install vault cli binary
+  - install: install vault, teller binaries
 
 display:
   source_url: "https://github.com/twplatformlabs/orb-vault"
