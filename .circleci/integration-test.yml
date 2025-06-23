@@ -1,0 +1,85 @@
+---
+version: 2.1
+
+orbs:
+  do: twdps/vault@dev:<<pipeline.git.revision>>
+  op: twdps/onepassword@3.0.0
+
+globals:
+  - &context platform
+
+# commands:
+
+#   echo-message:
+#     parameters:
+#       msg:
+#         type: string
+#     steps:
+#       - run:
+#           name: echo msg
+#           command: echo "<< parameters.msg >>"
+
+jobs:
+
+  test versioned package install: 
+    machine:
+      image: ubuntu-2204:current
+    resource_class: medium
+    steps:
+      - checkout
+      - do/install:
+          vault-version: 1.19.3
+          teller-version: 1.5.6
+      - run:
+          name: test version install
+          command: |
+            set -exo pipefail
+            vault version | grep "1.19.3"
+            teller version | grep "1.5.6"
+
+  # test commands:
+  #   machine:
+  #     image: ubuntu-2204:current
+  #   resource_class: medium
+  #   steps:
+  #     - checkout
+  #     - op/install:
+  #         op-version: 2.29.0
+  #     - op/env
+  #     - do/set-docker-credentials
+  #     - run:
+  #         name: test set-docker-credentials result
+  #         command: |
+  #           set -exo pipefail
+  #           cat ~/.docker/config.json | grep "auths"
+  #     - do/bash-functions
+  #     - run:
+  #         name: test bash-functions result
+  #         command: |
+  #           set -exo pipefail
+  #           cat bash-functions.sh
+  #           cat bash-functions.sh | grep "AWS"
+
+workflows:
+
+  integration tests:
+    jobs:
+      - test versioned package install
+      # - test package install using latest
+
+      # - test commands:
+      #     context: *context
+
+      # - do/slack:
+      #     name: test slack bot job
+      #     context: *context
+      #     channel: lab-events
+      #     message: orb-pipeline-events dev build test of slack message job with button
+      #     include-link: true
+      #     before-message:
+      #       - op/env
+      #       - echo-message:
+      #           msg: "before slack message"
+      #     after-message:
+      #       - echo-message:
+      #           msg: "after slack message"
