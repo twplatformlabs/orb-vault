@@ -2,26 +2,36 @@
 # yamllint disable rule:line-length
 ---
 description: |
-  Install vault cli for linux/intel arch
+  Install primary orb dependencies on linux/amd64 arch.
 
 parameters:
 
   vault-version:
     description: Version of the Vault binary
     type: string
-    default: "1.19.4"
+    default: ""
+
   teller-version:
     description: Version of the Teller binary
     type: string
-    default: "1.5.6"
+    default: ""
+
 steps:
-  - run:
-      name: Install the Vault binary
-      environment:
-        VAULT_VERSION: << parameters.vault-version >>
-      command: << include(scripts/install_vault.sh) >>
-  - run:
-      name: Install the teller binary
-      environment:
-        TELLER_VERSION: << parameters.teller-version >>
-      command: << include(scripts/install_teller.sh) >>
+
+  - when:
+      condition: << parameters.vault-version >>
+      steps:
+        - run:
+            name: Install the Vault binary
+            environment:
+              VAULT_VERSION: << parameters.vault-version >>
+            command: << include(scripts/install_vault.sh) >>
+  
+  - when:
+      condition: << parameters.teller-version >>
+      steps:
+        - run:
+            name: Install the Teller binary
+            environment:
+              TELLER_VERSION: << parameters.teller-version >>
+            command: << include(scripts/install_teller.sh) >>
