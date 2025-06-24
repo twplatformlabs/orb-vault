@@ -1,0 +1,25 @@
+# src/commands/write-to-file.yaml
+# yamllint disable rule:line-length
+---
+description: |
+  Writes value from vault to out-file.
+
+parameters:
+
+  vault-key-path:
+    description: key path
+    type: string
+
+  out-file:
+    description: output filename
+    type: string
+
+steps:
+  - run:
+      name: get key value
+      command: export WRITE_TO_FILE_VALUE=$(vault get kv << parameters.vault-key-path >>)
+  - run:
+      name: template to out-file
+      command: |
+        echo "\${WRITE_TO_FILE_VALUE}" > << parameters.out-file >>.tpl
+        envsubst < << parameters.out-file >>.tpl > << parameters.out-file >>.tpl

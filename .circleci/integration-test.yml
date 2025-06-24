@@ -59,6 +59,13 @@ jobs:
           name: check tpl results
           command: |
             cat test-template.txt | grep "Hello World!"
+      - do/write-to-file:
+          vault-key-path: platform/data/test-fixture/key
+          out-file: test-file.txt
+      - run:
+          name: check write-to-file results
+          command: |
+            cat test-template.txt | grep "test-value"
 
 workflows:
 
