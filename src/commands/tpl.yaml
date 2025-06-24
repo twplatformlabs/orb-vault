@@ -1,0 +1,68 @@
+# src/commands/tpl.yaml
+# yamllint disable rule:line-length
+---
+description: |
+  Populate template file with values from ENV variables and write to out-file.
+
+  Must provide the template filename. By default, the command will look in the
+  tpl/ folder and use the tpl-file without the tpl-ext as the out-file name. you
+  may override all of these defaults.
+
+  For example, if you provide a tpl-file parameter of "myfile.yaml" the command will
+  attempt to read "./tpl/myfile.yaml.tpl" and then write the result to "./myfile.yaml"
+
+parameters:
+
+  tpl-path:
+    description: path to template file
+    type: string
+    default: tpl
+
+  tpl-file:
+    description: template file name
+    type: string
+
+  tpl-ext:
+    description: template file extention
+    type: string
+    default: tpl
+
+  out-path:
+    description: path to write location
+    type: string
+    default: .
+
+  out-file:
+    description: output file name
+    type: string
+    default: ""
+
+  before-tpl:
+    description: Optional steps to run before template injection.
+    type: steps
+    default: []
+
+  after-tpl:
+    description: Optional steps to run before template injection.
+    type: steps
+    default: []
+
+steps:
+  - when:
+      name: Run before-tpl lifecycle hook steps.
+      condition: << parameters.before-tpl >>
+      steps: << parameters.before-tpl >>
+  - unless:
+      name: inject and write template << parameters.tpl-path >>/<< parameters.tpl-file >>.<< parameters.tpl-ext >> to << parameters.out-path >>/<< parameters.tpl-file >>
+      condition: << parameters.out-file >>
+      steps:
+        - run: envsubst < << parameters.tpl-path >>/<< parameters.tpl-file >>.<< parameters.tpl-ext >> > << parameters.out-path >>/<< parameters.tpl-file >>
+  - when:
+      name: inject and write template << parameters.tpl-path >>/<< parameters.tpl-file >>.<< parameters.tpl-ext >> to << parameters.out-path >>/<< parameters.out-file >>
+      condition: << parameters.out-file >>
+      steps:
+        - run: envsubst < << parameters.tpl-path >>/<< parameters.tpl-file >>.<< parameters.tpl-ext >> > << parameters.out-path >>/<< parameters.out-file >>
+  - when:
+      name: Run after-tpl lifecycle hook steps.
+      condition: << parameters.after-tpl >>
+      steps: << parameters.after-tpl >>

@@ -8,16 +8,16 @@ orbs:
 globals:
   - &context platform
 
-# commands:
+commands:
 
-#   echo-message:
-#     parameters:
-#       msg:
-#         type: string
-#     steps:
-#       - run:
-#           name: echo msg
-#           command: echo "<< parameters.msg >>"
+  echo-message:
+    parameters:
+      msg:
+        type: string
+    steps:
+      - run:
+          name: echo msg
+          command: echo "<< parameters.msg >>"
 
 jobs:
 
@@ -37,38 +37,37 @@ jobs:
             vault version | grep "1.19.3"
             teller version | grep "1.5.6"
 
-  # test commands:
-  #   machine:
-  #     image: ubuntu-2204:current
-  #   resource_class: medium
-  #   steps:
-  #     - checkout
-  #     - op/install:
-  #         op-version: 2.29.0
-  #     - op/env
-  #     - do/set-docker-credentials
-  #     - run:
-  #         name: test set-docker-credentials result
-  #         command: |
-  #           set -exo pipefail
-  #           cat ~/.docker/config.json | grep "auths"
-  #     - do/bash-functions
-  #     - run:
-  #         name: test bash-functions result
-  #         command: |
-  #           set -exo pipefail
-  #           cat bash-functions.sh
-  #           cat bash-functions.sh | grep "AWS"
+  test commands:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: medium
+    environment:
+      HELLO_TEST: Hello
+      WORLD_TEST: World
+    steps:
+      - checkout
+      - do/tpl:
+          tpl-path: test
+          tpl-file: test-template.txt
+          before-tpl:
+            - echo-message:
+                msg: "before tpl"
+          after-tpl:
+            - echo-message:
+                msg: "before tpl"
+      - run:
+          name: check tpl results
+          command: |
+            cat test-template.txt | grep "Hello World!"
 
 workflows:
 
   integration tests:
     jobs:
       - test versioned package install
-      # - test package install using latest
 
-      # - test commands:
-      #     context: *context
+      - test commands:
+          context: *context
 
       # - do/slack:
       #     name: test slack bot job
