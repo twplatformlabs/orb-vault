@@ -11,12 +11,11 @@ parameters:
     description: Vault namespace
     type: env_var_name
     default: VAULT_NAMESPACE
-  
+
   vault-approle-id:
     description: Vault app-role id
     type: env_var_name
     default: VAULT_ROLE_ID
-    
 
   vault-approle-secret:
     description: Vault app-role secret
