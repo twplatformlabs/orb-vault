@@ -1,0 +1,33 @@
+# src/commands/auth_vault.yml
+---
+description: |
+  Retrieve and export VAULT_TOKEN using Approle Auth. Required env vars are:
+  VAULT_ROLE_ID, VAULT_SECRET_ID, VAULT_ADDR
+  These must be set in the circleci context
+
+parameters:
+
+  vault-namespace:
+    description: Vault namespace
+    type: env_var_name
+    default: VAULT_NAMESPACE
+  
+  vault-approle-id:
+    description: Vault app-role id
+    type: env_var_name
+    default: VAULT_ROLE_ID
+    
+
+  vault-approle-secret:
+    description: Vault app-role secret
+    type: env_var_name
+    default: VAULT_SECRET_ID
+
+steps:
+  - run:
+      name: Retrieve and export VAULT_TOKEN
+      environment:
+        VAULT_NAMESPACE: << parameters.vault-namespace >>
+        VAULT_ROLE_ID: << parameters.vault-approle-id >>
+        VAULT_SECRET_ID: << parameters.vault-approle-secret >>
+      command: << include(scripts/set_approle_token.sh) >>
