@@ -7,6 +7,11 @@ description: |
 
 parameters:
 
+  vault-addr:
+    description: Vault address
+    type: env_var_name
+    default: VAULT_ADDR
+
   vault-namespace:
     description: Vault namespace
     type: env_var_name
@@ -26,6 +31,7 @@ steps:
   - run:
       name: Retrieve and export VAULT_TOKEN
       environment:
+        VAULT_ADDR: << parameters.vault-addr >>
         VAULT_NAMESPACE: << parameters.vault-namespace >>
         VAULT_ROLE_ID: << parameters.vault-approle-id >>
         VAULT_SECRET_ID: << parameters.vault-approle-secret >>
