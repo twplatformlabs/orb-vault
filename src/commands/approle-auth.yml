@@ -31,8 +31,8 @@ steps:
   - run:
       name: Retrieve and export VAULT_TOKEN
       environment:
-        VAULT_ADDR: << parameters.vault-addr >>
-        VAULT_NAMESPACE: << parameters.vault-namespace >>
-        VAULT_ROLE_ID: << parameters.vault-approle-id >>
-        VAULT_SECRET_ID: << parameters.vault-approle-secret >>
+        VAULT_ADDR: ${<< parameters.vault-addr >>}
+        VAULT_NAMESPACE: ${<< parameters.vault-namespace >>}
+        VAULT_ROLE_ID: ${<< parameters.vault-approle-id >>}
+        VAULT_SECRET_ID: ${<< parameters.vault-approle-secret >>}
       command: << include(scripts/set_approle_token.sh) >>
