@@ -2,12 +2,12 @@
 ---
 description: |
   Retrieve and export VAULT_TOKEN using Approle Auth.
-  
+
   Required env vars are: These must be set in the circleci context
   - VAULT_ADDR
   - VAULT_NAMESPACE
   - VAULT_ROLE_ID
-  - VAULT_SECRET_ID, 
+  - VAULT_SECRET_ID,
 
 steps:
   - run:
