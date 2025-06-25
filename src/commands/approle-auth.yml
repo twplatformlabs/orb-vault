@@ -5,34 +5,7 @@ description: |
   VAULT_ROLE_ID, VAULT_SECRET_ID, VAULT_ADDR
   These must be set in the circleci context
 
-parameters:
-
-  vault-addr:
-    description: Vault address
-    type: string
-    default: $VAULT_ADDR
-
-  vault-namespace:
-    description: Vault namespace
-    type: string
-    default: $VAULT_NAMESPACE
-
-  vault-approle-id:
-    description: Vault app-role id
-    type: string
-    default: $VAULT_ROLE_ID
-
-  vault-approle-secret:
-    description: Vault app-role secret
-    type: string
-    default: $VAULT_SECRET_ID
-
 steps:
   - run:
       name: Retrieve and export VAULT_TOKEN
-      environment:
-        VAULT_ADDR: ${<< parameters.vault-addr >>}
-        VAULT_NAMESPACE: ${<< parameters.vault-namespace >>}
-        VAULT_ROLE_ID: ${<< parameters.vault-approle-id >>}
-        VAULT_SECRET_ID: ${<< parameters.vault-approle-secret >>}
       command: << include(scripts/set_approle_token.sh) >>
