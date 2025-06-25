@@ -9,23 +9,23 @@ parameters:
 
   vault-addr:
     description: Vault address
-    type: env_var_name
-    default: VAULT_ADDR
+    type: string
+    default: $VAULT_ADDR
 
   vault-namespace:
     description: Vault namespace
-    type: env_var_name
-    default: VAULT_NAMESPACE
+    type: string
+    default: $VAULT_NAMESPACE
 
   vault-approle-id:
     description: Vault app-role id
-    type: env_var_name
-    default: VAULT_ROLE_ID
+    type: string
+    default: $VAULT_ROLE_ID
 
   vault-approle-secret:
     description: Vault app-role secret
-    type: env_var_name
-    default: VAULT_SECRET_ID
+    type: string
+    default: $VAULT_SECRET_ID
 
 steps:
   - run:
